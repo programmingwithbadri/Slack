@@ -19,13 +19,14 @@ io.on("connection", (socket) => {
   socket.on("messageToServer", (dataFromClient) => {
     console.log(dataFromClient);
   });
-  socket.on("newMessageToServer", (msg) => {
-    // console.log(msg)
-    io.emit("messageToClients", { text: msg.text });
-  });
+
+  // Join the Level1 room under default/main or '/' namespace
+  socket.join("level1");
+  socket.to("level1").emit("joined", "I have joined level1 room");
 });
 
-io.of('/admin').on("connection", (socket) => {
-    console.log("Someone connected to admin namespace");
-    socket.emit("welcome", "Welcome to admin channel")
-})
+// Admin Namespace
+io.of("/admin").on("connection", (socket) => {
+  console.log("Someone connected to admin namespace");
+  socket.emit("welcome", "Welcome to admin channel");
+});
