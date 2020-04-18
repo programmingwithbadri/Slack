@@ -26,3 +26,11 @@ io.on("connection", (socket) => {
   socket.emit("nsList", nsData);
 });
 
+// Listen connections in each namespaces
+namespaces.forEach((namespace) => {
+  io.of(namespace.endpoint).on("connection", (nsSocket) => {
+    // Socket has connected to some namespace
+    // Send the Room info for that particular namespace
+    nsSocket.emit("nsRoomLoad", namespace.rooms)
+  });
+});

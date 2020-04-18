@@ -14,7 +14,7 @@ socket.on("nsList", (nsData) => {
   Array.from(document.getElementsByClassName("namespace")).forEach((nsElem) => {
     nsElem.addEventListener("click", (e) => {
       const nsEndpoint = nsElem.getAttribute("ns");
-      console.log(`Navigating to ${nsEndpoint}...`)
+      console.log(`Navigating to ${nsEndpoint}...`);
     });
   });
 });
