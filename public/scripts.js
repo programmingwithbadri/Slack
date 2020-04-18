@@ -1,17 +1,7 @@
-const socket = io("http://localhost:9000"); // connects to '/' socket namespace
-const socket2 = io("http://localhost:9000/admin"); // connects to '/admin' socket namespace
+// Connect to default or main ('/') socket namespace
+const socket = io("http://localhost:9000"); 
 
-socket.on("messageFromServer", (dataFromServer) => {
-  console.log(dataFromServer);
-  socket.emit("dataToServer", { data: "Data from the Client!" });
-});
-
-socket2.on("welcome", (dataFromServer) => {
-  console.log(dataFromServer);
-});
-
-document.querySelector("#message-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const newMessage = document.querySelector("#user-message").value;
-  socket.emit("newMessageToServer", { text: newMessage });
-});
+// Listen for all the available namespaces
+socket.on("nsList", (nsData) => {
+  console.log(nsData)
+})
