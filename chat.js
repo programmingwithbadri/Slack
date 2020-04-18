@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const socketio = require('socket.io')
+const socketio = require("socket.io");
 
 // Host the chat.html file
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + "/public"));
 
 // Creates the express server to host
 const expressServer = app.listen(9000);
@@ -12,13 +12,20 @@ const expressServer = app.listen(9000);
 const io = socketio(expressServer);
 
 // Socket events
-io.on('connection',(socket)=>{
-    socket.emit('messageFromServer',{data:"Welcome to the socketio server"});
-    socket.on('messageToServer',(dataFromClient)=>{
-        console.log(dataFromClient)
-    })
-    socket.on('newMessageToServer',(msg)=>{
-        // console.log(msg)
-        io.emit('messageToClients',{text:msg.text})
-    })
+// Main Namespace
+io.on("connection", (socket) => {
+  // io.on() = io.of('/').on() because by default socket will run '/' namespace(main)
+  socket.emit("messageFromServer", { data: "Welcome to the socketio server" });
+  socket.on("messageToServer", (dataFromClient) => {
+    console.log(dataFromClient);
+  });
+  socket.on("newMessageToServer", (msg) => {
+    // console.log(msg)
+    io.emit("messageToClients", { text: msg.text });
+  });
+});
+
+io.of('/admin').on("connection", (socket) => {
+    console.log("Someone connected to admin namespace");
+    socket.emit("welcome", "Welcome to admin channel")
 })
