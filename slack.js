@@ -35,16 +35,14 @@ namespaces.forEach((namespace) => {
 
     // When someone joined the room
     nsSocket.on("joinRoom", (roomToJoin, numberOfUsersCallback) => {
+      // Leave the previous room when the client want to join any other room
+      const roomToLeave = Object.keys(nsSocket.rooms)[1];
+      nsSocket.leave(roomToLeave);
+      updateUsersInRoom(namespace, roomToLeave);
+
       // Join the requested room
       nsSocket.join(roomToJoin);
-
-      // Get the number of users in the room and
-      // Update the no of users in this room to all the sockets
-      io.of(namespace.endpoint)
-        .in(roomToJoin)
-        .clients((error, clients) => {
-          io.of(namespace.endpoint).in(roomToJoin).emit("updatedMembers", clients.length);
-        });
+      updateUsersInRoom(namespace, roomToJoin);
 
       // Find the current room object
       const nsRoom = namespace.rooms.find((room) => {
@@ -78,3 +76,15 @@ namespaces.forEach((namespace) => {
     });
   });
 });
+
+function updateUsersInRoom(namespace, roomToJoin) {
+  // Get the number of users in the room and
+  // Update the no of users in this room to all the sockets
+  io.of(namespace.endpoint)
+    .in(roomToJoin)
+    .clients((error, clients) => {
+      io.of(namespace.endpoint)
+        .in(roomToJoin)
+        .emit("updatedMembers", clients.length);
+    });
+}
