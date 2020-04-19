@@ -38,12 +38,12 @@ namespaces.forEach((namespace) => {
       // Join the requested room
       nsSocket.join(roomToJoin);
 
-      // Get the number of users in the room by using the server object
-      // Here for eg) we are sending the hard-coded ns
+      // Get the number of users in the room and
+      // Update the no of users in this room to all the sockets
       io.of("/wiki")
         .in(roomToJoin)
         .clients((error, clients) => {
-          numberOfUsersCallback(clients.length);
+          io.of("/wiki").in(roomToJoin).emit("updatedMembers", clients.length);
         });
 
       // Find the current room object
