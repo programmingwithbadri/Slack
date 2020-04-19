@@ -45,6 +45,13 @@ namespaces.forEach((namespace) => {
         .clients((error, clients) => {
           numberOfUsersCallback(clients.length);
         });
+
+      // Find the current room object
+      const nsRoom = namespace.rooms.find((room) => {
+        return room.roomTitle == roomToJoin;
+      });
+
+      nsSocket.emit("historyCatchup", nsRoom.history);
     });
 
     // Listen for the messages emitted by client
@@ -62,10 +69,11 @@ namespaces.forEach((namespace) => {
       const roomTitle = Object.keys(nsSocket.rooms)[1];
 
       // Find the current room object
-      const nsRoom = namespace.room.find((room) => {
+      const nsRoom = namespace.rooms.find((room) => {
         return room.roomTitle == roomTitle;
       });
       nsRoom.addMessage(fullMsg);
+
       io.of("/wiki").to(roomTitle).emit("messageToClients", fullMsg);
     });
   });
