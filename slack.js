@@ -40,10 +40,10 @@ namespaces.forEach((namespace) => {
 
       // Get the number of users in the room and
       // Update the no of users in this room to all the sockets
-      io.of("/wiki")
+      io.of(namespace.endpoint)
         .in(roomToJoin)
         .clients((error, clients) => {
-          io.of("/wiki").in(roomToJoin).emit("updatedMembers", clients.length);
+          io.of(namespace.endpoint).in(roomToJoin).emit("updatedMembers", clients.length);
         });
 
       // Find the current room object
@@ -74,7 +74,7 @@ namespaces.forEach((namespace) => {
       });
       nsRoom.addMessage(fullMsg);
 
-      io.of("/wiki").to(roomTitle).emit("messageToClients", fullMsg);
+      io.of(namespace.endpoint).to(roomTitle).emit("messageToClients", fullMsg);
     });
   });
 });
