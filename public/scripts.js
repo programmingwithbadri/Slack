@@ -1,5 +1,10 @@
 // Connect to default or main ('/') socket namespace
-const socket = io("http://localhost:9000");
+const userName = prompt("Enter the username");
+const socket = io("http://localhost:9000", {
+  query: {
+    userName
+  },
+});
 
 // Variable of first namespace
 let nsSocket;
