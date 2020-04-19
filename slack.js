@@ -53,13 +53,19 @@ namespaces.forEach((namespace) => {
         text: msg.text,
         time: Date.now(),
         userName: "dummy_name",
-        avatar: "https://via.placeholder.com/30"
+        avatar: "https://via.placeholder.com/30",
       };
       // Pass the received msg to all the clients that are in the room that this socket is in
       // the user will be in the 2nd room in the object list
       // because the socket ALWAYS joins its own room on connection(which is 1st index in the object list)
       // get the keys
       const roomTitle = Object.keys(nsSocket.rooms)[1];
+
+      // Find the current room object
+      const nsRoom = namespace.room.find((room) => {
+        return room.roomTitle == roomTitle;
+      });
+      nsRoom.addMessage(fullMsg);
       io.of("/wiki").to(roomTitle).emit("messageToClients", fullMsg);
     });
   });
