@@ -31,6 +31,20 @@ namespaces.forEach((namespace) => {
   io.of(namespace.endpoint).on("connection", (nsSocket) => {
     // Socket has connected to some namespace
     // Send the Room info for that particular namespace
-    nsSocket.emit("nsRoomLoad", namespace.rooms)
+    nsSocket.emit("nsRoomLoad", namespace.rooms);
+
+    // When someone joined the room
+    nsSocket.on("joinRoom", (roomToJoin, numberOfUsersCallback) => {
+      // Join the requested room
+      nsSocket.join(roomToJoin);
+
+      // Get the number of users in the room by using the server object
+      // Here for eg) we are sending the hard-coded ns
+      io.of("/wiki")
+        .in(roomToJoin)
+        .clients((error, clients) => {
+          numberOfUsersCallback(clients.length);
+        });
+    });
   });
 });

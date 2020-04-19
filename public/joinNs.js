@@ -1,6 +1,6 @@
 function joinNs(endpoint) {
   // Connect to the Wiki(home) namespace
-  const nsSocket = io(`http://localhost:9000${endpoint}`);
+  nsSocket = io(`http://localhost:9000${endpoint}`);
 
   // Update the dom element with the Room info
   nsSocket.on("nsRoomLoad", (nsRooms) => {
@@ -23,5 +23,11 @@ function joinNs(endpoint) {
         console.log("Someone clicked on the ", e.target.innerText);
       });
     });
+
+    // Add first room automatically once inside the namespace
+    const topRoom = document.querySelector(".room");
+    const topRoomName = topRoom.innerText;
+
+    joinRoom(topRoomName)
   });
 }
