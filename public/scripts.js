@@ -7,7 +7,7 @@ const socket = io("http://localhost:9000", {
 });
 
 // Variable of first namespace
-let nsSocket;
+let nsSocket = "";
 
 // Listen for all the available namespaces
 socket.on("nsList", (nsData) => {
@@ -25,4 +25,7 @@ socket.on("nsList", (nsData) => {
       joinNs(nsEndpoint);
     });
   });
+  
+  // Join the wiki namespace by default
+  joinNs("/wiki");
 });

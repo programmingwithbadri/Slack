@@ -12,6 +12,7 @@ const expressServer = app.listen(9000);
 
 // Create socket server object
 const io = socketio(expressServer);
+
 // Listens to Main or default Namespace
 io.on("connection", (socket) => {
   let nsData = namespaces.map((ns) => {
@@ -28,7 +29,9 @@ io.on("connection", (socket) => {
 // Listen connections in each namespaces
 namespaces.forEach((namespace) => {
   io.of(namespace.endpoint).on("connection", (nsSocket) => {
+    // Get the userName from the query param
     const userName = nsSocket.handshake.query.userName;
+
     // Socket has connected to some namespace
     // Send the Room info for that particular namespace
     nsSocket.emit("nsRoomLoad", namespace.rooms);

@@ -8,6 +8,7 @@ function joinNs(endpoint) {
     .querySelector("#user-input")
     .removeEventListener("submit", formSubmission);
   }
+  
   // Connect to the namespace
   nsSocket = io(`http://localhost:9000${endpoint}`);
 
