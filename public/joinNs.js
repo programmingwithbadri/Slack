@@ -1,5 +1,14 @@
 function joinNs(endpoint) {
-  // Connect to the Wiki(home) namespace
+  if(nsSocket) {
+    // if any socket is opened before, we should close it
+    nsSocket.close();
+
+    // Remove the event listener when the ns is switched to avoid submitting data between ns
+    document
+    .querySelector("#user-input")
+    .removeEventListener("submit", formSubmission);
+  }
+  // Connect to the namespace
   nsSocket = io(`http://localhost:9000${endpoint}`);
 
   // Update the dom element with the Room info
