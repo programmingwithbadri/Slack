@@ -28,6 +28,19 @@ function joinNs(endpoint) {
     const topRoom = document.querySelector(".room");
     const topRoomName = topRoom.innerText;
 
-    joinRoom(topRoomName)
+    joinRoom(topRoomName);
   });
+
+  // Click Event listener for form submission
+  document
+    .querySelector(".message-form")
+    .addEventListener("submit", formSubmission);
+}
+
+function formSubmission(event) {
+  event.preventDefault();
+  const newMessage = document.querySelector("#user-message").value;
+
+  // Emit the message to server once the form is submitted
+  nsSocket.emit("newMessageToServer", { text: newMessage });
 }

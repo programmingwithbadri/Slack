@@ -46,5 +46,10 @@ namespaces.forEach((namespace) => {
           numberOfUsersCallback(clients.length);
         });
     });
+
+    // Listen for the messages emitted by client
+    nsSocket.on("newMessageToServer", (msg) => {
+      console.log(msg)
+    });
   });
 });
