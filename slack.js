@@ -49,12 +49,18 @@ namespaces.forEach((namespace) => {
 
     // Listen for the messages emitted by client
     nsSocket.on("newMessageToServer", (msg) => {
+      const fullMsg = {
+        text: msg.text,
+        time: Date.now(),
+        userName: "dummy_name",
+        avatar: "https://via.placeholder.com/30"
+      };
       // Pass the received msg to all the clients that are in the room that this socket is in
       // the user will be in the 2nd room in the object list
       // because the socket ALWAYS joins its own room on connection(which is 1st index in the object list)
       // get the keys
       const roomTitle = Object.keys(nsSocket.rooms)[1];
-      io.of("/wiki").to(roomTitle).emit("messageToClients", msg);
+      io.of("/wiki").to(roomTitle).emit("messageToClients", fullMsg);
     });
   });
 });

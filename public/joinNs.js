@@ -31,6 +31,13 @@ function joinNs(endpoint) {
     joinRoom(topRoomName);
   });
 
+  // Listen to messages we got from server
+  nsSocket.on("messageToClients", (msg) => {
+    console.log(msg)
+    const newMsg = buildHTML(msg);
+    document.querySelector("#messages").innerHTML += newMsg;
+  });
+
   // Click Event listener for form submission
   document
     .querySelector(".message-form")
@@ -43,4 +50,20 @@ function formSubmission(event) {
 
   // Emit the message to server once the form is submitted
   nsSocket.emit("newMessageToServer", { text: newMessage });
+}
+
+function buildHTML(msg) {
+  const convertedDate = new Date(msg.time).toLocaleString();
+  const newHTML = `
+  <li>
+      <div class="user-image">
+          <img src="${msg.avatar}" />
+      </div>
+      <div class="user-message">
+          <div class="user-name-time">${msg.userName} <span>${convertedDate}</span></div>
+          <div class="message-text">${msg.text}</div>
+      </div>
+  </li>    
+  `;
+  return newHTML;
 }
