@@ -25,11 +25,11 @@ function joinNs(endpoint) {
       roomList.innerHTML += `<li class="room"><span class="glyphicon glyphicon-${glyph}"></span>${room.roomTitle}</li>`;
     });
 
-    // Add click listeners for each room
+    // Add click listeners for each room and join to the selected room
     let roomNodes = document.getElementsByClassName("room");
     Array.from(roomNodes).forEach((roomElem) => {
       roomElem.addEventListener("click", (e) => {
-        console.log("Someone clicked on the ", e.target.innerText);
+        joinRoom(e.target.innerText);
       });
     });
 
